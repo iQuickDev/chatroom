@@ -11,7 +11,7 @@ export interface Message
 
 export default class API
 {
-    private static readonly URL: string = `${window.location.hostname}:${window.location.port}`
+    private static readonly URL: string = `${window.location.hostname}:3001`
     public static readonly socket = io(API.URL)
     private static username : string
 

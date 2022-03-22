@@ -3,9 +3,9 @@ const express = require('express')
 
 const app = express()
 app.use(express.static("dist"))
-app.listen(3000)
+app.listen(3001)
 
-const io = new Server(80,
+const io = new Server(3001,
 {
     cors: { origin: '*'}
 })

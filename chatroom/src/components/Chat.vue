@@ -17,8 +17,10 @@
             </div>
 
             <div id="input">
+                <form @submit="(e) => e.preventDefault()">
                 <input type="text" placeholder="Type a message" v-model="message" />
                 <button @click="send">Send</button>
+                </form>
             </div>
         </div>
     </div>
@@ -47,6 +49,12 @@ export default defineComponent({
             if (this.message)
                 this.messages.push(API.sendMessage(this.message))
             this.message = ""
+            this.scrollToBottom()
+        },
+        scrollToBottom()
+        {
+            const messages : any = document.getElementById("messages")
+            messages.scrollTop = messages.scrollHeight
         }
     },
     mounted()
@@ -57,7 +65,7 @@ export default defineComponent({
             {
                 console.log(msg)
                 this.messages.push(msg)
-                console.log(this.message)
+                this.scrollToBottom()
             })
             return
         }
@@ -74,6 +82,7 @@ export default defineComponent({
     height: calc(100% - 35px)
     overflow-y: auto
     overflow-x: hidden
+    padding: 5px
 ul
     padding: 0
 li
@@ -82,6 +91,7 @@ li
     background: #444
     border: 1px solid #ccc
     margin-bottom: 5px
+    min-width: 98vw
 .time
     color: #ff0
     padding: 5px
@@ -95,7 +105,7 @@ li
     color: #fff
     padding: 5px
     margin-right: 5px
-    word-break: break-all
+    word-break: break-word
 
 .info
     display: block
@@ -129,4 +139,7 @@ li
         color: #fff
         &:focus
             outline: none
+form
+    width: 100%
+    display: flex
 </style>
