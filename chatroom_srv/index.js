@@ -22,13 +22,14 @@ io.on("connection", (socket) =>
             {
                 if (data.username === client.username)
                 socket.disconnect(true)
+                return
             }
 
             connectedSockets.push({
                 id: socket.id,
                 username: data.username
             })
-            console.log(`${socket.id} authenticated as ${data.username}`)
+            console.log(`[CONNECT] ${data.username}`)
         }
         else
         socket.disconnect(true)
@@ -37,7 +38,10 @@ io.on("connection", (socket) =>
     socket.on("clientMessage", (msg) =>
     {
         if (msg.sender)
-        socket.broadcast.emit("serverMessage", msg)
+        {
+            console.log(`[${msg.timestamp}] ${msg.sender}: ${msg.message}`)
+            socket.broadcast.emit("serverMessage", msg)
+        }
         else
         socket.disconnect()
     })
@@ -49,7 +53,7 @@ io.on("connection", (socket) =>
             if (client.id == socket.id)
             {
                 connectedSockets.splice(connectedSockets.indexOf(client), 1)
-                console.log(`${socket.id} disconnected`)
+                console.log(`[DISCONNECT] ${client.username}`)
             }
         }
     })
