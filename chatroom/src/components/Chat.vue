@@ -61,6 +61,8 @@ export default defineComponent({
     {
         if (app.config.globalProperties.isAuthenticated)
         {
+            this.messages = API.getHistory()
+
             API.socket.on("serverMessage", (msg: any) =>
             {
                 console.log(msg)

@@ -14,10 +14,10 @@ export default class API
     private static readonly URL: string = `${window.location.hostname}:3001`
     public static readonly socket = io(API.URL)
     private static username : string
+    private static history : Message[] = []
 
     constructor()
     {
-        console.log(API.URL)
         API.socket.on("connect_error", (reason) =>
         {
             alert(`Connection Error: ${reason.message}`)
@@ -26,6 +26,12 @@ export default class API
         API.socket.on("disconnect", (reason) =>
         {
             alert(`Disconnected: ${reason}`)
+        })
+
+        API.socket.on("history", (history) =>
+        {
+            for (const message of history)
+            API.history.push(message)
         })
     }
     
@@ -51,6 +57,11 @@ export default class API
         })
 
         return msg
+    }
+
+    public static getHistory() : Message[]
+    {
+        return API.history
     }
 
     public static async getMessages() : Promise<Message[]>

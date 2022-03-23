@@ -1,9 +1,11 @@
 const {Server} = require("socket.io")
 const express = require('express')
+const history = require('./historymanager')
+const HistoryManager = new history('./history.json')
 
 const app = express()
 app.use(express.static("dist"))
-app.listen(3001)
+app.listen(3000)
 
 const io = new Server(3001,
 {
@@ -25,6 +27,8 @@ io.on("connection", (socket) =>
                 return
             }
 
+            socket.emit("history", HistoryManager.loadHistory())
+
             connectedSockets.push({
                 id: socket.id,
                 username: data.username
@@ -39,8 +43,9 @@ io.on("connection", (socket) =>
     {
         if (msg.sender)
         {
-            console.log(`[${msg.timestamp}] ${msg.sender}: ${msg.message}`)
+            console.log(`[${msg.timestamp}] ${msg.sender}: ${msg.payload}`)
             socket.broadcast.emit("serverMessage", msg)
+            HistoryManager.saveMessage(msg)
         }
         else
         socket.disconnect()
