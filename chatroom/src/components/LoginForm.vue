@@ -1,7 +1,7 @@
 <template>
 <div>
     <h1 id="title">Quicke's Chatroom</h1>
-    <input type="text" placeholder="Username" v-model="username">
+    <input type="text" placeholder="Username" v-model="username" maxlength="16">
     <button @click="login">Connect</button>
 </div>
 </template>
@@ -29,10 +29,6 @@ export default defineComponent({
                 router.push("/chatroom")
             }
         },
-        message(msg : string) : void
-        {
-            API.sendMessage(msg)
-        }
     }
 })
 </script>

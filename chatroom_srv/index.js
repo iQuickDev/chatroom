@@ -5,6 +5,7 @@ const HistoryManager = new history('./history.json')
 
 const app = express()
 app.use(express.static("dist"))
+app.get('/chatroom', (req, res) => res.redirect('/'))
 app.listen(3000)
 
 const io = new Server(3001,
@@ -18,7 +19,7 @@ io.on("connection", (socket) =>
 {
     socket.on("auth", (data) =>
     {
-        if (data.username)
+        if (data.username && data.username.length > 16)
         {
             for (const client of connectedSockets)
             {

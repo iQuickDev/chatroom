@@ -59,15 +59,8 @@ export default class API
         return msg
     }
 
-    public static getHistory() : Message[]
+    public static async getHistory() : Promise<Message[]>
     {
         return API.history
     }
-
-    public static async getMessages() : Promise<Message[]>
-    {
-        const response = await fetch(`${API.URL}/messages`)
-        return await response.json()
-    }
-
 }

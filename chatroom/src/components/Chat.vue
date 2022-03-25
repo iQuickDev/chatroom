@@ -57,11 +57,19 @@ export default defineComponent({
             messages.scrollTop = messages.scrollHeight
         }
     },
-    mounted()
+    async mounted()
     {
+        window.onbeforeunload = () =>
+        {
+            app.config.globalProperties.isAuthenticated = false
+            API.socket.disconnect()
+            this.messages = []
+        }
+
         if (app.config.globalProperties.isAuthenticated)
         {
-            this.messages = API.getHistory()
+            this.messages = await API.getHistory()
+            this.scrollToBottom()
 
             API.socket.on("serverMessage", (msg: any) =>
             {
@@ -69,9 +77,9 @@ export default defineComponent({
                 this.messages.push(msg)
                 this.scrollToBottom()
             })
+
             return
         }
-
         router.push("/")
     }
 })
